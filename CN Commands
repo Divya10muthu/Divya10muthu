@@ -1,0 +1,75 @@
+         Java program to use commands like tcpdump, netstat, 
+                 ifconfig, nslookup and trace route
+AIM:
+Write a Java program to execute system commands (tcpdump, netstat, ifconfig, nslookup, and 
+traceroute) and display their results.
+ALGORITHM:
+Step 1: the commands you want to execute.
+Step 2: Use ProcessBuilder to run the commands and capture their output.
+Step 3: Print the output of each command to the console
+PROGRAM:
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+public class SystemCommands {
+ public static void main(String[] args) {
+executeCommand("tcpdump -n -i eth0"); // Example: Run tcpdump on network interface eth0
+ executeCommand("netstat -an"); // Example: Display network connections
+ executeCommand("ifconfig"); // Example: Display network interface configuration
+ executeCommand("nslookup www.example.com"); // Example: Perform DNS lookup
+ executeCommand("traceroute www.example.com"); // Example: Perform traceroute
+ }
+ private static void executeCommand(String command) {
+ try {
+ ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+ processBuilder.redirectErrorStream(true);
+ Process process = processBuilder.start();
+ BufferedReader reader = new BufferedReader(new 
+InputStreamReader(process.getInputStream()));
+ System.out.println("Command: " + command);
+ System.out.println("Output:");
+ String line;
+ while ((line = reader.readLine()) != null) {
+ System.out.println(line);
+ }
+ process.waitFor();
+ System.out.println("\n----------------\n");
+ } catch (IOException | InterruptedException e) {
+ e.printStackTrace();
+ }
+ }
+}
+OUTPUT:
+Command: tcpdump -n -i eth0
+Output:
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
+----------------
+Command: netstat -an
+Output:
+Proto Recv-Q Send-Q Local Address Foreign Address State
+tcp 0 0 0.0.0.0:22 0.0.0.0:* LISTEN
+...
+----------------
+Command: ifconfig
+Output:
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST> mtu 1500
+...
+----------------
+Command: nslookup www.example.com
+Output:
+Server: UnKnown
+Address: 192.168.1.1
+Non-authoritative answer:
+Name: www.example.com
+Addresses: 93.184.216.34
+2606:2800:220:1:248:1893:25c8:1946
+----------------
+Command: traceroute www.example.com
+Output:
+traceroute to www.example.com (93.184.216.34), 30 hops max, 60 byte packets
+1 router (192.168.1.1) 1.234 ms 1.123 ms 1.456 ms
+2 isp-router (203.0.113.1) 5.678 ms 4.567 ms 6.789 ms
+...
+RESULT:
+Thus the Java program to execute system commands (tcpdump, netstat, ifconfig, nslookup, and 
