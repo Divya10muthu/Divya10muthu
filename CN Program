@@ -1,0 +1,57 @@
+Java Program to implement HTTP web client program to 
+ download a web page using TCP Sockets
+ 
+AIM:
+To implement a HTTP web client program to download a web page using TCP Sockets.
+ALGORITHM:
+Step 1: Create URL object using url string.
+Step 2:Create a BufferReader object using url.openStream() method.
+Step 3:Create a BufferWriter object to write to a file.
+Step 4:Read each line using BufferReader and write using BufferWriter.
+Step 5:Open the downloaded contents using a brower.
+PROGRAM:
+import java.io.*; 
+import java.net.URL;
+import java.net.MalformedURLException;
+public class download {
+public static void DownloadWebPage(String webpage){
+try {
+// Create URL object
+URL url = new URL(webpage); 
+BufferedReader readr = new BufferedReader(new InputStreamReader(url.openStream()));
+// Enter filename in which you want to download 
+BufferedWriter writer =new BufferedWriter(new FileWriter("Download.html"));
+// read each line from stream till end 
+String line;
+while ((line = readr.readLine()) != null) 
+{
+writer.write(line);
+}
+readr.close(); 
+writer.close();
+System.out.println("Successfully Downloaded.");
+}
+// Exceptions
+catch (MalformedURLException mue)
+{ 
+System.out.println("Malformed URL Exception raised");
+}
+catch (IOException e) {
+System.out.println("IOException raised");
+}
+}
+public static void main(String args[]) throws IOException
+{
+String url = "https://www.geeksforgeeks.org/"; 
+DownloadWebPage(url);
+}
+} 
+Output:
+C:\Program Files\Java\jdk1.5.0\bin >javac download.java
+Note: download.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+C:\Program Files\Java\jdk1.5.0\bin >java download
+Successfully Downloaded.
+RESULT:
+ The webpage is successfully downloaded and the contents are displayed and
+verified.
